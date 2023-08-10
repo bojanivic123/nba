@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\PlayersController;
 use App\Http\Controllers\TeamsController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,10 @@ Route::get("/login", [AuthController::class, "showLoginPage"])->middleware("notA
 Route::post("/login", [AuthController::class, "login"])->middleware("notAuth");
 
 Route::get("/logout", [AuthController::class, "logout"])->middleware("isAuth");
+
+Route::post("/createcomment", [CommentsController::class, "store"])->middleware("isAuth");
+
+
 
 
 
