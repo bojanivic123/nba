@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\CommentMiddleware;
 use App\Http\Middleware\NotAuthMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -67,7 +68,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         "isAuth" => AuthMiddleware::class, 
-        "notAuth" => NotAuthMiddleware::class
+        "notAuth" => NotAuthMiddleware::class,
+        "isComment" => CommentMiddleware::class
     ];
 }
 

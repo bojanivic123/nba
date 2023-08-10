@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CreateCommentMail;
+use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CommentsController extends Controller
 {
@@ -21,21 +24,22 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(
-            [
-                "content" => "required|string|min:10|max:2500",
-                "team_id" => "required|exists:teams,id"
-            ]
-        );
-
-        Comment::create([
-            "content" => $request->content,
-            "user_id" => Auth::user()->id,
-            "team_id" => $request->team_id
+        $request->validate([
+            'content' => 'required|string|min:1|max:2500',
+            'team_id' => 'required|exists:teams,id',
         ]);
 
-        return redirect("/teams/" . $request->team_id);
-    } 
+        $comment = Comment::create([
+            'content' => $request->content,
+            'user_id' => Auth::user()->id,
+            'team_id' => $request->team_id,
+        ]);
+
+        $mailData = $comment->only('content');
+        Mail::to(Auth::user()->email)->send(new CreateCommentMail($mailData));
+
+        return redirect('/teams/' . $request->team_id);
+    }
 
     /**
      * Display the specified resource.

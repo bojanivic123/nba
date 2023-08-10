@@ -17,22 +17,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/", [TeamsController::class, "index"]);
-Route::get("/teams/{id}", [TeamsController::class, "show"])->middleware("isAuth");
-Route::get("/players/{id}", [PlayersController::class, "show"])->middleware("isAuth");
+Route::get('/', [TeamsController::class, 'index']);
 
-Route::get("/register", [AuthController::class, "showRegisterPage"])->middleware("notAuth");
-Route::post("/register", [AuthController::class, "register"])->middleware("notAuth");
+Route::get('/teams/{id}', [TeamsController::class, 'show'])->middleware('isAuth');
 
-Route::get("/login", [AuthController::class, "showLoginPage"])->middleware("notAuth");
-Route::post("/login", [AuthController::class, "login"])->middleware("notAuth");
+Route::get('/players/{id}', [PlayersController::class, 'show'])->middleware('isAuth');
 
-Route::get("/logout", [AuthController::class, "logout"])->middleware("isAuth");
+Route::get('/register', [AuthController::class, 'showRegisterPage'])->middleware('notAuth');
+Route::post('/register', [AuthController::class, 'register'])->middleware('notAuth');
 
-Route::post("/createcomment", [CommentsController::class, "store"])->middleware("isAuth");
+Route::get('/login', [AuthController::class, 'showLoginPage'])->middleware('notAuth');
+Route::post('/login', [AuthController::class, 'login'])->middleware('notAuth');
 
+Route::get('/logout', [AuthController::class, 'logout'])->middleware('isAuth');
 
+Route::post('/createcomment', [CommentsController::class, 'store'])
+    ->middleware('isAuth')
+    ->middleware('isComment');
 
-
-
-
+Route::get('/verify_mail/{id}', [AuthController::class, 'verify']);
